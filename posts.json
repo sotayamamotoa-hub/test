@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-06-17T09:00:00.000Z",
+  "version": 13,
+  "posts": [
+    {
+      "id": "sample-001",
+      "title": "オープニングタイトル AE",
+      "body": "イベント本編冒頭のタイトルモーション。文字組みのタイミングを調整中。",
+      "author": "山本",
+      "category": "完了",
+      "type": "video",
+      "mediaType": "video/mp4",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%231b1f24'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-14T02:00:00.000Z"
+    },
+    {
+      "id": "sample-002",
+      "title": "展示用ループ映像",
+      "body": "ブース常時再生用。30秒ループ、書き出し前の色味確認。",
+      "author": "佐藤",
+      "category": "進行中",
+      "type": "video",
+      "mediaType": "video/mp4",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%23243042'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-12T05:30:00.000Z"
+    },
+    {
+      "id": "sample-003",
+      "title": "ロゴモーション case01",
+      "body": "コーポレートロゴの登場アニメ。After Effects のシェイプで作成。",
+      "author": "田中",
+      "category": "レビュー待ち",
+      "type": "video",
+      "mediaType": "video/mp4",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%233a2c1a'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-11T08:15:00.000Z"
+    },
+    {
+      "id": "sample-004",
+      "title": "キービジュアル 静止画",
+      "body": "全体のトーン検討用ビジュアル。配色のバリエーション3案。",
+      "author": "山本",
+      "category": "企画",
+      "type": "photo",
+      "mediaType": "image/jpeg",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%232a1f2e'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-10T01:00:00.000Z"
+    },
+    {
+      "id": "sample-005",
+      "title": "UIモーション検証",
+      "body": "アプリ画面遷移のマイクロインタラクション検証。Premiere で仮編集。",
+      "author": "鈴木",
+      "category": "進行中",
+      "type": "video",
+      "mediaType": "video/mp4",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%23102a26'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-09T07:45:00.000Z"
+    },
+    {
+      "id": "sample-006",
+      "title": "MV絵コンテ",
+      "body": "楽曲MVの絵コンテラフ。カット割りとカメラワークのメモ。",
+      "author": "高橋",
+      "category": "企画",
+      "type": "photo",
+      "mediaType": "image/jpeg",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%232e2412'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-07T03:20:00.000Z"
+    },
+    {
+      "id": "sample-007",
+      "title": "配信パッケージ一式",
+      "body": "イベント配信用のテロップ・下層帯・トランジション素材。",
+      "author": "佐藤",
+      "category": "完了",
+      "type": "photo",
+      "mediaType": "image/jpeg",
+      "imageUrl": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='360'%3E%3Crect%20width='640'%20height='360'%20fill='%231a2433'/%3E%3C/svg%3E",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-05T06:10:00.000Z"
+    },
+    {
+      "id": "sample-008",
+      "title": "制作メモ：書き出し設定",
+      "body": "H.264 / 12Mbps / 2pass。納品先別の設定まとめ。",
+      "author": "田中",
+      "category": "メモ",
+      "type": "text",
+      "mediaType": "",
+      "imageUrl": "",
+      "videoUrl": "",
+      "drivePreviewUrl": "",
+      "createdAt": "2026-06-03T04:00:00.000Z"
+    }
+  ]
+}

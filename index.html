@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="VDD（映像デザイン室）の作例ギャラリー。画像・動画の制作アウトプットをまとめて公開しています。"
+    />
+    <title>VDD Creative Catalog</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      (function () {
+        var storageKey = "vdd-creative-catalog.theme";
+        var theme = "";
+
+        try {
+          theme = localStorage.getItem(storageKey) || "";
+        } catch (error) {
+          theme = "";
+        }
+
+        if (theme !== "dark" && theme !== "light") {
+          theme =
+            window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        }
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="site-header">
+        <a class="brand-mark" href="#" aria-label="VDD Creative Catalog">vdd.creative.catalog</a>
+        <nav class="site-nav" aria-label="Utility">
+          <button type="button" id="theme-toggle-button" class="theme-toggle" aria-pressed="false">
+            Dark
+          </button>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Creative work gallery</p>
+          <h1>VDD Creative Catalog</h1>
+          <p class="hero-copy">
+            映像デザイン室の制作アウトプットをまとめたギャラリーです。
+            一覧は画像だけを見せ、マウスオーバーでタイトルやメモを確認できます。
+          </p>
+        </div>
+        <dl class="stats-grid" aria-label="Gallery stats">
+          <div>
+            <dt>Posts</dt>
+            <dd id="stat-posts">0</dd>
+          </div>
+          <div>
+            <dt>Media</dt>
+            <dd id="stat-photos">0</dd>
+          </div>
+          <div>
+            <dt>Authors</dt>
+            <dd id="stat-authors">0</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="board-layout">
+        <section class="listing-panel" aria-label="Artifacts listing">
+          <div class="listing-header">
+            <div class="section-heading">
+              <p class="eyebrow">Gallery</p>
+              <h2>Uploaded works</h2>
+            </div>
+            <div class="listing-actions">
+              <p id="global-status" class="global-status" role="status">Loading gallery...</p>
+            </div>
+          </div>
+
+          <div class="filters">
+            <label class="field compact-field">
+              <span>Search</span>
+              <input id="search-input" type="search" placeholder="Search title, text, author" />
+            </label>
+
+            <label class="field compact-field">
+              <span>Type</span>
+              <select id="type-filter">
+                <option value="all">All</option>
+                <option value="photo">Images</option>
+                <option value="video">Videos</option>
+                <option value="text">Text only</option>
+              </select>
+            </label>
+
+            <label class="field compact-field">
+              <span>Category</span>
+              <select id="category-filter">
+                <option value="all">All</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="active-chips" class="active-chips"></div>
+          <div id="feed" class="feed is-loading" aria-live="polite">
+            <article class="loading-card"><span></span></article>
+            <article class="loading-card"><span></span></article>
+            <article class="loading-card"><span></span></article>
+            <article class="loading-card"><span></span></article>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="modal" class="modal" hidden>
+      <button class="modal-backdrop" type="button" aria-label="Close" data-close-modal></button>
+      <article class="modal-card" aria-modal="true" aria-labelledby="modal-title" role="dialog">
+        <button id="modal-close-button" class="modal-close" type="button" aria-label="Close">Close</button>
+        <div id="modal-content" class="modal-content"></div>
+      </article>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
