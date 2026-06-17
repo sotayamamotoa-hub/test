@@ -94,13 +94,23 @@ function normalizePost(post) {
   var drivePreviewUrl = String(post.drivePreviewUrl || "").trim();
   var mediaType = String(post.mediaType || "").trim();
   var type = String(post.type || "").trim();
+  var youtubeId = extractYouTubeId(post.youtubeId || post.youtubeUrl || "");
+  var source = String(post.source || "").trim().toLowerCase();
+
+  if (!source) {
+    source = youtubeId ? "youtube" : (drivePreviewUrl || videoUrl ? "drive" : "");
+  }
 
   if (!type) {
-    type = videoUrl || drivePreviewUrl || mediaType.indexOf("video/") === 0
+    type = youtubeId || videoUrl || drivePreviewUrl || mediaType.indexOf("video/") === 0
       ? "video"
       : imageUrl
         ? "photo"
         : "text";
+  }
+
+  if (type === "video" && source === "youtube" && !imageUrl && youtubeId) {
+    imageUrl = youtubeThumbnail(youtubeId);
   }
 
   return {
@@ -110,11 +120,13 @@ function normalizePost(post) {
     author: String(post.author || "").trim(),
     category: CATEGORY_OPTIONS.indexOf(post.category) >= 0 ? post.category : "その他",
     type: type,
+    source: source,
+    youtubeId: youtubeId,
     mediaType: mediaType,
     imageUrl: imageUrl,
     videoUrl: videoUrl,
     drivePreviewUrl: drivePreviewUrl,
-    hasMedia: Boolean(imageUrl || videoUrl || drivePreviewUrl),
+    hasMedia: Boolean(imageUrl || videoUrl || drivePreviewUrl || youtubeId),
     createdAt: post.createdAt || new Date().toISOString()
   };
 }
@@ -308,18 +320,22 @@ function appendMediaElement(container, post, inModal) {
     return;
   }
 
-  if (post.type === "video" && post.imageUrl) {
-    appendPreviewImage(container, post, true);
+  if (post.type === "video") {
+    if (post.imageUrl) {
+      appendPreviewImage(container, post);
+    } else {
+      var videoPlaceholder = createElement("div", "post-placeholder");
+      videoPlaceholder.textContent = "▶";
+      container.appendChild(videoPlaceholder);
+    }
+
+    appendPlayAffordance(container);
+    appendVideoBadge(container, post);
     return;
   }
 
   if (post.imageUrl) {
-    appendPreviewImage(container, post, false);
-    return;
-  }
-
-  if (post.type === "video" && (post.videoUrl || post.drivePreviewUrl) && inModal) {
-    renderModalVideo(container, post);
+    appendPreviewImage(container, post);
     return;
   }
 
@@ -328,7 +344,7 @@ function appendMediaElement(container, post, inModal) {
   container.appendChild(placeholder);
 }
 
-function appendPreviewImage(container, post, isVideoPreview) {
+function appendPreviewImage(container, post) {
   var image = document.createElement("img");
   image.alt = getPostTitle(post);
   image.loading = "lazy";
@@ -336,19 +352,41 @@ function appendPreviewImage(container, post, isVideoPreview) {
   image.width = 960;
   image.height = 540;
   image.addEventListener("error", function () {
-    renderMediaError(container, "Preview unavailable");
+    renderMediaError(container, "Preview unavailable", post);
   }, { once: true });
   image.src = post.imageUrl;
   container.appendChild(image);
+}
 
-  if (isVideoPreview) {
-    appendMediaBadge(container, "Video");
-  } else if (post.type === "photo") {
-    appendMediaBadge(container, "Image");
-  }
+function appendVideoBadge(container, post) {
+  var isYouTube = post.source === "youtube";
+  var badge = createElement("span", "media-type " + (isYouTube ? "media-type--youtube" : "media-type--internal"));
+  badge.textContent = isYouTube ? "YouTube" : "社内 Drive";
+  container.appendChild(badge);
+}
+
+function appendPlayAffordance(container) {
+  var wrap = createElement("div", "play-affordance");
+  var dot = document.createElement("span");
+  dot.textContent = "▶";
+  dot.setAttribute("aria-hidden", "true");
+  wrap.appendChild(dot);
+  container.appendChild(wrap);
 }
 
 function renderModalVideo(container, post) {
+  if (post.source === "youtube" && post.youtubeId) {
+    var youtube = document.createElement("iframe");
+    youtube.title = getPostTitle(post);
+    youtube.loading = "lazy";
+    youtube.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+    youtube.setAttribute("allowfullscreen", "");
+    youtube.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(post.youtubeId) + "?rel=0";
+    container.appendChild(youtube);
+    appendVideoBadge(container, post);
+    return;
+  }
+
   if (post.videoUrl) {
     var video = document.createElement("video");
     video.src = post.videoUrl;
@@ -365,7 +403,7 @@ function renderModalVideo(container, post) {
     }, { once: true });
 
     container.appendChild(video);
-    appendMediaBadge(container, "Video");
+    appendVideoBadge(container, post);
     return;
   }
 
@@ -377,12 +415,13 @@ function renderModalVideo(container, post) {
     frame.setAttribute("allowfullscreen", "");
     frame.src = post.drivePreviewUrl;
     container.appendChild(frame);
-    appendMediaBadge(container, "Video");
+    appendVideoBadge(container, post);
     return;
   }
 
   if (post.imageUrl) {
-    appendPreviewImage(container, post, true);
+    appendPreviewImage(container, post);
+    appendVideoBadge(container, post);
     return;
   }
 
@@ -559,6 +598,11 @@ function renderModal() {
   appendModalDetail(details, "Category", post.category);
   appendModalDetail(details, "Date", formatDate(post.createdAt));
   appendModalDetail(details, "Type", getTypeLabel(post.type));
+
+  if (post.type === "video") {
+    appendModalDetail(details, "Source", post.source === "youtube" ? "YouTube" : "社内 Drive");
+  }
+
   ui.modalContent.appendChild(details);
 
   var body = createElement("p", "modal-body");
@@ -695,6 +739,39 @@ function cssEscape(value) {
   }
 
   return String(value).replace(/["\\]/g, "\\$&");
+}
+
+function extractYouTubeId(value) {
+  var text = String(value || "").trim();
+
+  if (!text) {
+    return "";
+  }
+
+  if (text.indexOf("/") === -1 && text.indexOf(".") === -1 && /^[a-zA-Z0-9_-]{6,15}$/.test(text)) {
+    return text;
+  }
+
+  var patterns = [
+    /[?&]v=([a-zA-Z0-9_-]+)/,
+    /youtu\.be\/([a-zA-Z0-9_-]+)/,
+    /\/embed\/([a-zA-Z0-9_-]+)/,
+    /\/shorts\/([a-zA-Z0-9_-]+)/
+  ];
+
+  for (var index = 0; index < patterns.length; index += 1) {
+    var match = text.match(patterns[index]);
+
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  return "";
+}
+
+function youtubeThumbnail(youtubeId) {
+  return "https://img.youtube.com/vi/" + encodeURIComponent(youtubeId) + "/hqdefault.jpg";
 }
 
 function getErrorMessage(error) {

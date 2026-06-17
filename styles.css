@@ -508,6 +508,44 @@ select:focus {
   text-transform: uppercase;
 }
 
+.media-type--youtube {
+  background: #ff0033;
+  color: #fff;
+}
+
+.media-type--internal {
+  background: rgba(11, 16, 20, 0.86);
+  color: #fff;
+}
+
+.play-affordance {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.play-affordance span {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  padding-left: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.post-card:hover .play-affordance,
+.post-card.is-focused .play-affordance {
+  opacity: 0;
+}
+
 .post-caption {
   position: absolute;
   left: 12px;
